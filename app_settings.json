@@ -1,4 +1,1 @@
-{
-  "history_length": 3,
-  "model": "OpenAI GPT4.1"
-}
+{"history_length":3,"model":"Google Gemini 3.5 Flash Low","query_engine_version":"new"}
