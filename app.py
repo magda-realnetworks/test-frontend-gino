@@ -12,8 +12,27 @@ import streamlit as st
 import streamlit.components.v1 as components
 import urllib3
 
-API_URL = "http://localhost:5002/question"
-NEW_API_URL = "http://localhost:5002/question/v2"
+def load_env_file(path: str) -> None:
+    """Load local KEY=VALUE settings without overriding exported variables."""
+    if not os.path.isfile(path):
+        return
+
+    with open(path, encoding="utf-8") as env_file:
+        for raw_line in env_file:
+            line = raw_line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            key = key.strip()
+            value = value.strip().strip('"').strip("'")
+            if key:
+                os.environ.setdefault(key, value)
+
+
+load_env_file(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
+
+API_URL = os.environ.get("API_URL", "http://localhost:5002/question")
+NEW_API_URL = os.environ.get("NEW_API_URL", "http://localhost:5002/question/v2")
 CHAT_STORE = "chats.json"
 CHAT_DIR = "chats"
 CHAT_INDEX_STORE = os.path.join(CHAT_DIR, "index.json")
@@ -47,10 +66,10 @@ MODEL_OPTIONS = [
     "AWS DeepSeek-R1",
     "AWS gpt-oss-120b",
 ]
-CVOS_BASE = "cvos.dev.real.com"
-CVOS_USER = "gino2"
-CVOS_PASS = "Z2V0R2lubzEyMyE="
-CVOS_DIRECTORY = "main"
+CVOS_BASE = os.environ.get("CVOS_BASE", "cvos.dev.real.com")
+CVOS_USER = os.environ.get("CVOS_USER", "")
+CVOS_PASS = os.environ.get("CVOS_PASS", "")
+CVOS_DIRECTORY = os.environ.get("CVOS_DIRECTORY", "main")
 CVOS_BASE_URL = (
     CVOS_BASE if CVOS_BASE.startswith(("http://", "https://")) else f"https://{CVOS_BASE}"
 )

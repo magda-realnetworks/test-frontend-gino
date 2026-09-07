@@ -1,0 +1,10 @@
+[project]
+name = "gino-chat-frontend"
+version = "0.1.0"
+description = "Local Streamlit frontend for GINO AI chat"
+requires-python = ">=3.10"
+dependencies = [
+    "requests>=2.31",
+    "streamlit>=1.40",
+    "urllib3>=2.0",
+]
